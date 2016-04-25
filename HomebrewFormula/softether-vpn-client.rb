@@ -5,9 +5,9 @@
 class SoftetherVpnClient < Formula
   desc "SoftEther VPN Client"
   homepage "https://www.softether.org"
-  url "http://www.softether-download.com/files/softether/v4.19-9605-beta-2016.03.06-tree/Mac_OS_X/SoftEther_VPN_Client/64bit_-_Intel_x64_or_AMD64/softether-vpnclient-v4.19-9605-beta-2016.03.06-macos-x64-64bit.tar.gz"
-  version "v4.19-9605-beta"
-  sha256 "b50b8b39f8569bf6688500725ab06b6bd8b38a764d846204f0e6d380cae0295e"
+  url "http://www.softether-download.com/files/softether/v4.21-9613-beta-2016.04.24-tree/Mac_OS_X/SoftEther_VPN_Client/64bit_-_Intel_x64_or_AMD64/softether-vpnclient-v4.21-9613-beta-2016.04.24-macos-x64-64bit.tar.gz"
+  version "v4.21-9613-beta"
+  sha256 "471a307d21fd8c60dcc6109f69c6ca3db95c8a0af64136ee1c3703ded42243d2"
 
   depends_on "cmake" => :build
   depends_on "openssl"
