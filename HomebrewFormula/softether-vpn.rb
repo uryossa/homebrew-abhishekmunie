@@ -1,29 +1,32 @@
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
-class SoftetherVpnClient < Formula
+class SoftetherVpn < Formula
   desc "SoftEther VPN Client"
   homepage "https://www.softether.org"
-  url "http://www.softether-download.com/files/softether/v4.21-9613-beta-2016.04.24-tree/Mac_OS_X/SoftEther_VPN_Client/64bit_-_Intel_x64_or_AMD64/softether-vpnclient-v4.21-9613-beta-2016.04.24-macos-x64-64bit.tar.gz"
-  version "v4.21-9613-beta"
-  sha256 "471a307d21fd8c60dcc6109f69c6ca3db95c8a0af64136ee1c3703ded42243d2"
+  url "https://github.com/abhishekmunie/SoftEtherVPN/archive/master.tar.gz"
+  # sha256 ""
+  head "https://github.com/abhishekmunie/SoftEtherVPN.git"
 
-  depends_on "cmake" => :build
+  version "HEAD"
+
   depends_on "openssl"
+  depends_on "readline"
+  depends_on "libiconv"
+  depends_on "ncurses"
   depends_on "gcc"
 
   def install
-    system "make", "i_read_and_agree_the_license_agreement"
-    system "mkdir", "#{prefix}/bin"
-    system "cp", "vpnclient", "#{prefix}/bin/sevpnclient"
-    system "cp", "vpncmd", "#{prefix}/bin/sevpncmd"
-    system "cp", "hamcore.se2", "#{prefix}/bin"
-    # system "ln", "-s", "../vpnclient", "#{prefix}/bin/sevpnclient"
-    # system "ln", "-s", "../vpncmd", "#{prefix}/bin/sevpncmd"
+    # ENV.deparallelize  # if your formula fails when building in parallel
+
+    # Remove unrecognized options if warned by configure
+    # system "./configure", "--disable-debug",
+    #                       "--disable-dependency-tracking",
+    #                       "--disable-silent-rules",
+    #                       "--prefix=#{prefix}"
+    system "cp", "src/makefiles/macos_64bit.mak", "Makefile"
+    system "make"
+    system "make", "install"
   end
 
-  plist_options :startup => true, :manual => "sevpnclient start"
+  plist_options :startup => true, :manual => "vpnclient start"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -34,10 +37,10 @@ class SoftetherVpnClient < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_bin}/sevpnclient</string>
-          <string>start</string>
+          <string>#{opt_bin}/vpnclient</string>
+          <string>execsvc</string>
         </array>
-        <key>RunAtLoad</key>
+        <key>KeepAlive</key>
         <true/>
         <key>StandardErrorPath</key>
         <string>/dev/null</string>
@@ -52,6 +55,7 @@ class SoftetherVpnClient < Formula
     Although vpnclient can run without root, you must be root to manage VPN NICs.
 
     The launchdaemon is set to start.
+
     EOS
   end
 
@@ -65,6 +69,6 @@ class SoftetherVpnClient < Formula
     #
     # The installed folder is not in the path, so use the entire path to any
     # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "#{bin}/sevpnclient"
+    system "#{bin}/vpnclient"
   end
 end
