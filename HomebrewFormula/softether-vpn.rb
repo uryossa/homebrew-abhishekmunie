@@ -23,7 +23,8 @@ class SoftetherVpn < Formula
     #                       "--prefix=#{prefix}"
     system "cp", "src/makefiles/macos_64bit.mak", "Makefile"
     system "make"
-    system "make", "install"
+    system "mkdir", "#{prefix}/bin"
+    system "make", "install", "INSTALL_BINDIR=#{prefix}/bin/", "INSTALL_VPNSERVER_DIR=#{prefix}/vpnserver/", "INSTALL_VPNBRIDGE_DIR=#{prefix}/vpnbridge/", "INSTALL_VPNCLIENT_DIR=#{prefix}/vpnclient/", "INSTALL_VPNCMD_DIR=#{prefix}/vpncmd/"
   end
 
   plist_options :startup => true, :manual => "vpnclient start"
